@@ -17,3 +17,5 @@ spec:
           image: REPO_URI_PLACEHOLDER:TAG_PLACEHOLDER
           ports:
             - containerPort: 3000
+      imagePullSecrets:
+        - name: dockerhub-secret
