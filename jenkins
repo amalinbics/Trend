@@ -1,7 +1,10 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = "amalinbics/final-project-trend"
+         DOCKER_IMAGE  = credentials('docker-image')
+         AWS_REGION    = credentials('aws-region')       
+         EKS_CLUSTER   = credentials('cluster-name')   
+         KUBECONFIG    = credentials('kube-config')
     }
     stages {
         stage('Clone Repository') {
@@ -24,6 +27,35 @@ pipeline {
                         sh "docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
                     }
                 }
+            }
+        }
+        stage('Replace the image') {
+            steps {
+                script {
+                    // Create a temporary deployment file with the new color label
+                    sh """
+                    sed -i \
+                        -e "s|REPO_URI_PLACEHOLDER|${DOCKER_IMAGE}|g" \
+                        -e "s|TAG_PLACEHOLDER|${env.BUILD_NUMBER}|g" eks/deployment.yaml
+                    """
+                }
+            }
+        }
+        stage('Setup kubeconfig') {
+            steps {
+                sh '''
+                    mkdir -p $(dirname $KUBECONFIG)
+                    aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER --kubeconfig $KUBECONFIG
+                '''
+            }
+        }
+        stage('Deploy to EKS') {
+            steps {
+                sh '''
+                    kubectl --kubeconfig $KUBECONFIG apply -f eks/secret.yaml  
+                    kubectl --kubeconfig $KUBECONFIG apply -f eks/deployment.yaml 
+                    kubectl --kubeconfig $KUBECONFIG apply -f eks/service.yaml 
+                '''
             }
         }
     }
