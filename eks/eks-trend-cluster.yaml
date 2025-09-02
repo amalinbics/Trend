@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: trend-cluster
   region: ap-south-1
-  version: "1.32"
+  version: "1.33"
 
 nodeGroups:
   - name: ng-1
