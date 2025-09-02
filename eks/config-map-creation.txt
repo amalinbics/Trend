@@ -1,0 +1,24 @@
+aws eks update-kubeconfig --region us-east-1 --name my-eks-cluster
+
+kubectl create configmap aws-auth -n kube-system \
+  --from-literal=mapRoles='[]'
+
+
+// sample configmap
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: arn:aws:iam::123456789012:role/eks-ec2-role   # 👈 Replace with your EC2 IAM role ARN
+      username: jenkins-ec2
+      groups:
+        - system:masters
+
+
+kubectl edit configmap aws-auth -n kube-system
+
+ws eks update-kubeconfig --region us-east-1 --name my-eks-cluster
