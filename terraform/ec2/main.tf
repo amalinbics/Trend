@@ -12,4 +12,7 @@ resource "aws_instance" "jenkins" {
   associate_public_ip_address = true
   key_name                    = aws_key_pair.jenkins-server_key.key_name
   user_data                   = file(var.user_data_path)
+  tags = {
+    Name = "Jenkins-Server"
+  }
 }
