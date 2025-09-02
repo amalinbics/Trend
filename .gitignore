@@ -36,3 +36,6 @@ secrets.auto.tfvars
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# SSH keys
+/terraform/ec2/ssh-key/

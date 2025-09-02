@@ -20,7 +20,7 @@ variable "key_name" {
 
 variable "public_key_path" {
   type        = string
-  default     = "~/.ssh/id_rsa.pub"
+   default    = "./ec2/ssh-key/rsa-public.pub"
 }
 
 variable "ami" {
