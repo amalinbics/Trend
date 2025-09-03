@@ -22,3 +22,5 @@ data:
 kubectl edit configmap aws-auth -n kube-system
 
 aws eks update-kubeconfig --region us-east-1 --name my-eks-cluster
+
+-test build
