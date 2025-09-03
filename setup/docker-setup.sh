@@ -20,5 +20,5 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 # Adding Docker Group and User
 sudo groupadd docker
 sudo usermod -aG docker $USER
-newgrp docker
 sudo usermod -aG docker jenkins
+newgrp docker
