@@ -71,6 +71,29 @@ resource "aws_security_group" "jenkins_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  # Open to all IPs (can restrict later)
   }
+  ingress {
+    description = "Prometheus access"
+    from_port   = 9000
+    to_port     = 9100
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Open to all IPs (can restrict later)
+  }
+
+  ingress {
+    description = "Grafana access"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Open to all IPs (can restrict later)
+  }
+
+  ingress {
+    description = "http"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Open to all IPs (can restrict later)
+  }
 
   egress {
     description = "Allow all outbound traffic"
